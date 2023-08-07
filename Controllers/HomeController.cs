@@ -17,6 +17,10 @@ namespace prjSite.Controllers
         {
             return View();
         }
+        public IActionResult first()
+        {
+            return View();
+        }
 
         public IActionResult Privacy()
         {

@@ -6,6 +6,19 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+<div>
+    <table id="empTable" class="table table-bordered table-hover table-striped">
+        <thead>
+            <tr>
+                <td>姓名</td>
+                <td>年資</td>
+                <td>薪水</td>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
 
 @section Styles {
     <style>
@@ -16,9 +29,81 @@
 }
 @section Scripts{
     <script>
-        $('.display-4').on('mouseover',function(){
-            $(this).css('color','blue')
-        }).on('mouseout',function(){
-                $(this).css('color','black')})
+        //$('.display-4').on('mouseover',function(){
+        //    $(this).css('color','blue')
+        //}).on('mouseout',function(){
+        //        $(this).css('color','black')})
+
+        //const emps = [{ "name": "Tom", "workYears": 3, "salary": 35000 },
+        //{ "name": "Jack", "workYears": 5, "salary": 40000 },
+        //{ "name": "Mary", "workYears": 7, "salary": 45000 }];
+        //////emps => array
+        ////console.log(emps[1]); // { "name": "Jack", "workYears": 5, "salary": 40000 }
+        //////emps[1] => object
+        ////console.log(emps[1].workYears); //5
+        //for(let i=0,max=emps.length;i<max;i++){
+        //    console.log(emps[i].name)
+        //    console.log(emps[i].workYears)
+        //    console.log(emps[i].salary)
+        //}
+        const emp = {
+            "employees": [
+                { "name": "Tom", "workYears": 3, "salary": 35000 },
+                { "name": "Jack", "workYears": 5, "salary": 40000 },
+                { "name": "Mary", "workYears": 7, "salary": 45000 }
+            ]
+        };
+        //console.log(emp.employees[0].name);
+
+        //for(let i =0 , max =emp.employees.length; i< max ;i++){
+        //    console.log(emp.employees[i].name)
+        //    console.log(emp.employees[i].salary)
+        //    console.log(emp.employees[i].workYears)
+        //}
+
+        //emp = {} => object => object.property  object["property"]
+        //emp.employees = > [ ]
+        //console.log(emp.length); //undefined
+        //console.log(emp.employees.length) //3
+        //console.log(emp.employees[2].name //Mary
+        //[ ]
+        //{ }
+        //[{},{
+        // "address":{},
+        // "skills":[]
+        // }]
+        //ECMA Script Language  ES5、ES6、ES7 async await .......
+        //JavaScript  Array.method()
+        //emp.employees.forEach(function({
+        //})
+        //const datas = ["1", "2","3"].map((a, b, c) => {
+        // //a => value [value, value]
+        // //b => index 0,1,2
+        //    //c => array ["1", "2","3"]
+        // console.log(a)
+        // console.log(b)
+        // console.log(c)
+        //})
+        //const datas = ["a","b","c"].map(value=>{
+        //    return  `<li>${value}</li>`
+        //})
+        ////datas["<li>a</li>","<li>b</li>"]
+        ////console.log(datas)
+        ////console.log(datas.join(""))
+        //document.querySelector('#ul1').innerHTML = datas.join("")
+
+        const datas = emp.employees.map( employee=>{
+            const {name, workYears, salary} = employee
+            return(
+            `
+            <tr>
+                <td>${name}</td>
+                 <td>${workYears}</td>
+                  <td>${salary}</td>
+            </tr>
+            `
+        )
+        })
+        document.querySelector('#empTable>tbody').innerHTML = datas.join("")
     </script>
 }
