@@ -1,0 +1,95 @@
+﻿
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>Register</h1>
+<div class="row">
+    <div class="col=3"></div>
+            <div class="col=6">
+    @*                <form action="~/api/getDemo" method="post"  >*@
+                         <form id="form1">
+                        <div class="mb-3">
+                                <label for="UserName" class="form-label">UserName</label>
+                                <input type="text" class="form-control" id="UserName" name="Name">
+                <span id="nameConflict" tyep="text" class="text text-danger"></span>
+                        </div>
+            <div class="mb-3">
+                <label for="UserEmail" class="form-label">UserEmail</label>
+                <input type="email" class="form-control" id="UserEmail" rows="3" name="Email" />
+            </div>
+                         <div class="mb-3">
+                                <label for="UserAge" class="form-label">UserAge</label>
+                                <input type="number" class="form-control" id="UserAge" rows="3" name="Age"></input>
+                        </div>
+            <div class="mb-3">
+                <label for="formFile" class="form-label">Photo</label>
+                <input class="form-control" type="file" id="formFile" name="file">
+            </div>
+             
+                        <button type="submit" class="btn btn-secondary" id="button1">傳送</button>
+                    </form>
+                    <div class="alert-info" id="myDiv"></div>
+            </div>
+    <div class="col=3"></div>
+</div>
+
+@section Styles{
+    <style>
+
+    </style>
+}
+@section Scripts{
+    <script>
+        const btn = document.querySelector('#button1')
+        const username = document.querySelector('#UserName')
+        const txtName = document.querySelector('#UserName')
+        const txtAge = document.querySelector('#UserAge')
+        const myDiv = document.querySelector('#myDiv')
+        const txtNameError = document.querySelector('#nameConflict')
+
+  
+            username.addEventListener('blur',event=>{
+            event.preventDefault();
+
+            const xhr = new XMLHttpRequest();
+
+            xhr.open('POST', '/api/nameCheck');
+            //xhr.setRequestHeader('Content_Type', 'application/x-www-form-urlencoded')
+            //xhr.send(`name=${username}`)
+
+            const formdata = new FormData(document.querySelector('#form1'));
+            xhr.send(formdata);
+
+            xhr.addEventListener('load',()=>{
+                const datas = xhr.responseText;
+                
+                txtNameError.innerHTML = datas;
+                
+            })
+        })
+
+        //event 作為一個名稱(可隨意取)，主要是為了要用後面.prventDefault的方法，這個是為了在按下submit按鈕後不會重新載入，所以如果是用ajax就需要這樣使用
+        btn.addEventListener('click', event=>{
+            event.preventDefault();
+
+            
+
+            const xhr = new XMLHttpRequest();
+
+            xhr.open('POST', '/api/Register');
+            //xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+            //xhr.send(`name=${txtName.value}&age=${txtAge.value}`);
+
+            const formdata = new FormData(document.querySelector('#form1'));
+            xhr.send(formdata);
+
+            xhr.addEventListener("load", () => {
+                const datas = xhr.responseText;
+                myDiv.innerHTML = datas;
+        } ) 
+
+        })
+    </script>
+}
+

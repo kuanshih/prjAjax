@@ -1,7 +1,13 @@
+using Microsoft.EntityFrameworkCore;
+using prjSite.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+//利用builder加入DemoContext
+builder.Services.AddDbContext<DemoContext>(
+    option => option.UseSqlServer(builder.Configuration.GetConnectionString("DemoConnection")));
 
 var app = builder.Build();
 

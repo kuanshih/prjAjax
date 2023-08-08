@@ -5,26 +5,72 @@
 
 <h1>first</h1>
 
+<input type="text"/>
 <button id="button1" class="btn btn-primary ">
     click
+</button>
+<img src="/images/Walk.gif "  id="walk" />
+<button id="button2" class="btn btn-danger ">
+    強制結束
 </button>
 <div id="div1" class="alert-info"></div>
 
 @section Styles{
-
+    <style>
+        #walk{
+            display :none
+        }
+    </style>
 }
 
 @section Scripts{
     <script>
         const btn = document.querySelector('#button1')
+        const btnCancel = document.querySelector('#button2')
         const myDiv = document.querySelector('#div1')
+        const walkimag = document.querySelector('#walk')
+
+        //第一步驟:建立ajax物件
+        const xhr = new XMLHttpRequest();
+
+        //使用loadstart事件，讓按下去按鈕時觸發
+        xhr.addEventListener('loadstart', () => {
+            myDiv.innerHTML=""
+            btn.setAttribute('disabled', 'disabled')
+            btn.textContent = "執行中..."
+            walkimag.style.display = "inline"
+            myDiv.innerHTML += `<h3>ajax開始</h3>`
+        })
+        //loadend 結束時觸發
+        xhr.addEventListener('loadend', () => {
+            btn.removeAttribute('disabled')
+            btn.textContent = "click"
+            walkimag.style.display = "none"
+            myDiv.innerHTML += `<h3>ajax結束</h3>`
+        })
+
+        //timeout 事件
+        xhr.addEventListener('timeout', () => {
+            myDiv.innerHTML += `<h3>已超過loading 時間</h3>`
+        })
+
+        xhr.addEventListener('abort',()=>{
+            myDiv.innerHTML += `<h3>強制結束loading</h3>`
+        })
+
+        btnCancel.addEventListener('click',()=>{
+            xhr.abort();
+        })
+
         btn.addEventListener('click', () =>{
             //myDiv.innerHTML = " button clicked"
-            //第一步驟:建立ajax物件
-            const  xhr = new XMLHttpRequest();
+           
 
             //第二步驟:對伺服器程式發出要求
             xhr.open("GET","/Api/index");
+
+            //Timeout 事件
+            xhr.timeout = 3000;
             xhr.send();
             //第三步驟: 在load事件中接收伺服器回傳的結果string, xml or json
             xhr.addEventListener("load", ()=>{
@@ -32,7 +78,7 @@
 
                 //第四步驟: 讀出回傳的結果(xml or json)
                 //第五步驟: 將讀出的結果顯示在網頁上DOM
-                myDiv.innerHTML = `<h3>${data}</h3>`
+                myDiv.innerHTML += `<h3>${data}</h3>`
             })
         })
     </script>
