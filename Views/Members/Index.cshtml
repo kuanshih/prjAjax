@@ -43,10 +43,10 @@
                 @Html.DisplayFor(modelItem => item.Age)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FileName)
+                <img src="~/images/@item.FileName" class="img-thumbnail w-50"/>   
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FileData)
+                    <img src="@Url.Action("GetImageByte","api",new{id=item.MemberId})" class="img-thumbnail w-25" />
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.MemberId">Edit</a> |

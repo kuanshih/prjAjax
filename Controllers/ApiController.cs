@@ -22,8 +22,8 @@ namespace prjSite.Controllers
         }
         public IActionResult Index()
         {
-            System.Threading.Thread.Sleep(5000);
-            return Content("Hello Ajax!!");
+            //System.Threading.Thread.Sleep(5000);
+            return Content("Hello Fetch!!");
         }
 
         public IActionResult getDemo( UserViewModel user)//public IActionResult getDemo(string name, int age = 30)
@@ -58,6 +58,12 @@ namespace prjSite.Controllers
             _context.SaveChanges();
             return Content("新增成功");
         }
+        public IActionResult GetImageByte(int id =1)
+        {
+            Members? memberid = _context.Members.Find(id);
+            byte[] image = memberid.FileData;
+            return File(image,"image/jpeg");
+        }
 
         public IActionResult nameCheck(Members member)
         {
@@ -67,6 +73,24 @@ namespace prjSite.Controllers
                     return Content("此名字已註冊過");
             }
             return Content("");
+        }
+
+        //
+        public IActionResult cities()
+        {
+            var cities = _context.Address.Select(c => c.City).Distinct();
+               return Json(cities);
+        }
+        public IActionResult District(string city)
+        {
+            var districts = _context.Address.Where(a=>a.City ==city).Select(c=>c.SiteId).Distinct();
+            return Json(districts);
+
+        }
+        public IActionResult Roads(string siteId)
+        {
+            var roads = _context.Address.Where(a => a.SiteId == siteId).Select(r => r.Road).Distinct();
+            return Json(roads);
         }
     }
 }

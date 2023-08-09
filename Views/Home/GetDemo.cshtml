@@ -16,7 +16,10 @@
         //1. 建立XMLHttpRequest物件
         const xhr = new XMLHttpRequest; 
         //2. 對伺服器發出要求
-        xhr.open('GET','/api/getDemo') 
+        //xhr.open('GET','/api/getDemo') 
+        const name = jaff;
+        const age =45;
+        xhr.open('GET', `@Url.Content("/api/getDemo")?name=${name}&age=${age}`);/* 這邊用到的Url.content()會比較複雜，因為後面還要再加上 ? name = ${ name }& age=${ age }*/
         xhr.send();
         //3. 接收伺服器回傳的資料
         xhr.addEventListener('load',()=>{

@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewData["Title"] = "Promise";
+}
+
+<h1>Promise</h1>
+
+@section Scripts{
+    <script>
+
+        //建立Promise物件
+        //const promise = new Promise((resolve,reject)=>{
+        //     const num = Math.random() > 0.5 ? 1 : 0;
+        //     console.log(num)
+        //     if(num){
+        //         resolve("成功")
+        //     }else{
+        //         reject("錯誤")
+        //     }
+        //}) 
+        //使用
+        //promise
+        //    .then(data=>{
+        //        console.log(data)
+        //    })
+        //    .catch(error=>{
+        //        console.log(error)
+        //    })
+        //    .finally(()=>{
+        //        console.log("end")
+        //    })
+        function printSomething(data){
+             return new Promise((resolve, reject)=>{
+                 setTimeout(()=>{
+                     resolve(data + 1)
+                 },1000)
+             })
+        }
+       // console.log(printSomething("A"));  //這裡會得到 Promise物件，要取出Promise物件的資料要透過then()
+        printSomething("A")
+           .then(d => {
+               console.log(d)
+                return printSomething("B")
+           })
+           .then(d => {
+               console.log(d)
+               return printSomething("C")
+           })
+           .then(d => {
+               console.log(d)
+           })
+
+        function printsomething2(data){
+            return new Promise((resolve, reject) => {
+                setTimeout(()=>{
+                    resolve(data + 1)
+                },1000)
+            })
+        }
+
+        printsomething2("A")
+        .then(d=>{console.log(d)
+        return printsomething2("B")
+        })
+        .then(d=>{
+            console.log(d)
+            return printsomething2("C")
+        })
+        .then(d=>{console.log(d)
+        })
+    </script>
+    }

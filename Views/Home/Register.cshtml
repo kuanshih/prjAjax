@@ -30,6 +30,7 @@
                         <button type="submit" class="btn btn-secondary" id="button1">傳送</button>
                     </form>
                     <div class="alert-info" id="myDiv"></div>
+                    <img id="preview" class="img-thumbnail w-25" />
             </div>
     <div class="col=3"></div>
 </div>
@@ -46,6 +47,7 @@
         const txtName = document.querySelector('#UserName')
         const txtAge = document.querySelector('#UserAge')
         const myDiv = document.querySelector('#myDiv')
+        const img = document.querySelector('#formFile')
         const txtNameError = document.querySelector('#nameConflict')
 
   
@@ -65,31 +67,60 @@
                 const datas = xhr.responseText;
                 
                 txtNameError.innerHTML = datas;
-                
+                loadImage()
             })
         })
+
 
         //event 作為一個名稱(可隨意取)，主要是為了要用後面.prventDefault的方法，這個是為了在按下submit按鈕後不會重新載入，所以如果是用ajax就需要這樣使用
         btn.addEventListener('click', event=>{
             event.preventDefault();
 
-            
+        //    const xhr = new XMLHttpRequest();
 
-            const xhr = new XMLHttpRequest();
+        //    //xhr.open('POST', '/api/Register');
+        //    //xhr.open('POST','@Url.Action("Register","api")');
+        //    xhr.open('POST','@Url.Content("/api/Register")');
+        //    //xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+        //    //xhr.send(`name=${txtName.value}&age=${txtAge.value}`);
 
-            xhr.open('POST', '/api/Register');
-            //xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
-            //xhr.send(`name=${txtName.value}&age=${txtAge.value}`);
+        //    const formdata = new FormData(document.querySelector('#form1'));
+        //    xhr.send(formdata);
+
+        //    xhr.addEventListener("load", () => {
+        //        const datas = xhr.responseText;
+        //        myDiv.innerHTML = datas;
+        //} )
 
             const formdata = new FormData(document.querySelector('#form1'));
-            xhr.send(formdata);
-
-            xhr.addEventListener("load", () => {
-                const datas = xhr.responseText;
-                myDiv.innerHTML = datas;
-        } ) 
-
+            fetch('@Url.Content("/api/Register")', {
+                body: formdata,
+                method: 'POST'
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert("新增成功")
+                        location.href='@Url.Content("/members")'
+                    }
+                    else
+                        alert("新增失敗")
+                })
         })
+
+            $("#formFile").change(function () {
+                readURL(this);
+            });
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $("#preview").attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        
     </script>
 }
 

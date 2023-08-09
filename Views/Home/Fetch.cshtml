@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewData["Title"] = "Fetch";
+}
+
+<h1>Fetch</h1>
+<div id="div1"></div>
+<img id="img1"  class="w-25"/>
+<ul id="ul1"></ul>
+
+
+@section Scripts{
+    <script>
+        console.log(fetch('@Url.Content("/api/index")'));
+        fetch('@Url.Content("/api/index")')
+            .then(response => {
+                console.log(response)
+                console.log(response.ok)
+            })
+            //映出文字(text())
+        console.log(fetch('@Url.Content("/api/index")'));
+        fetch('@Url.Content("/api/index")')
+            .then(response => {
+                return response.text();
+            })
+            .then(data=>{
+                document.querySelector("#div1").innerHTML = data;
+            })
+
+            //映出城市(json())
+            //fetch('@Url.Content("/api/cities")')
+            //.then(response=>response.json())
+            //.then(datas=>{
+            //    const lis = datas.map(data=>`<li>${data}</li>`)
+            //    document.querySelector("#ul1").innerHTML =lis.join("");
+            //})
+
+        //Aysnc映出城市
+            async function loadJson(){
+        const response =await fetch('@Url.Content("/api/cities")')
+            const datas =await response.json()
+                const lis = datas.map(data => `<li>${data}</li>`)
+                document.querySelector("#ul1").innerHTML = lis.join("");
+            }
+
+        //映出照片(blob()),最後一行使用src屬性，並用URL.createObjectURL()放入二進位
+        //fetch('@Url.Content("/api/GetImageByte/2")')
+        //.then(response=>response.blob())
+        //.then(datas=>{
+        //    const myImg = document.querySelector("#img1");
+        //    myImg.src = URL.createObjectURL(datas);
+        //})
+
+        //Aysnc image
+        async function loadImage(){
+            const response = await fetch('@Url.Content("/api/GetImageByte/2")')
+                const datas =await response.blob()
+                    const myImg = document.querySelector("#img1");
+                    myImg.src = URL.createObjectURL(datas);
+        }
+
+        loadJson()
+        loadImage()
+    </script>
+}

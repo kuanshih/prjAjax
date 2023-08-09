@@ -1,0 +1,91 @@
+﻿
+@{
+    ViewData["Title"] = "Address";
+}
+
+<h1>Address</h1>
+<select id="selectCity"></select>
+<select id="selectDistrict"></select>
+<select id="selectRoad"></select>
+<div class="alert-info" id="selInfo"></div>
+
+@section Styles{
+    <style>
+
+    </style>
+}
+
+@section Scripts{
+    <script>
+        const selCity = document.querySelector('#selectCity');
+        const selDis = document.querySelector('#selectDistrict');
+        const selRoad = document.querySelector('#selectRoad');
+        const selInfo = document.querySelector('#selInfo');
+        function loadCIty(){
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', '@Url.Content("/api/cities")');
+            xhr.send();
+
+            xhr.addEventListener('load',()=>{
+                const datas =JSON.parse(xhr.responseText);
+                const cities = datas.map(city =>`<option vlaue='${city}'>${city}</option>`)
+                //console.log(cities);
+                selCity.innerHTML = cities.join("");
+
+                loadDistrict()
+            })
+        }
+
+        function loadDistrict() {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', `@Url.Content("/api/District")?city=${selCity.value}`);
+            xhr.send();
+
+            xhr.addEventListener('load', () => {
+                const datas = JSON.parse(xhr.responseText);
+                const districts = datas.map(district => `<option vlaue='${district}'>${district}</option>`)
+                //console.log(cities);
+                selDis.innerHTML = districts.join("");
+
+                loadRoad()
+            })
+        }
+
+        function loadRoad() {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', `@Url.Content("/api/Roads")?siteId=${selDis.value}`);
+            xhr.send();
+
+            xhr.addEventListener('load', () => {
+                const datas = JSON.parse(xhr.responseText);
+                const roads = datas.map(road => `<option vlaue='${road}'>${road}</option>`)
+                console.log(roads);
+                selRoad.innerHTML = roads.join("");
+                show();
+            })
+        }
+
+        loadCIty()
+
+        selCity.addEventListener('change',()=>{
+            selInfo.textContent = selCity.value;
+            loadDistrict();
+            
+        })
+
+        selDis.addEventListener('change', () => {
+            selInfo.textContent += selDis.value;
+            loadRoad();
+            
+        })
+
+        selRoad.addEventListener('change', show) 
+        
+            function show(){
+                selInfo.textContent = `${selDis.value}${selRoad.value}`
+            
+        }
+        
+    </script>
+}
+
