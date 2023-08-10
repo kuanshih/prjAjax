@@ -76,6 +76,8 @@
         btn.addEventListener('click', event=>{
             event.preventDefault();
 
+
+            //用XMLHttpRequest寫
         //    const xhr = new XMLHttpRequest();
 
         //    //xhr.open('POST', '/api/Register');
@@ -92,6 +94,7 @@
         //        myDiv.innerHTML = datas;
         //} )
 
+        //用fetch寫
             const formdata = new FormData(document.querySelector('#form1'));
             fetch('@Url.Content("/api/Register")', {
                 body: formdata,
@@ -107,6 +110,8 @@
                 })
         })
 
+
+        //照片預覽功能
             $("#formFile").change(function () {
                 readURL(this);
             });
