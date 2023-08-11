@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewData["Title"] = "dataTablesAPI";
+}
+
+<table id="example" class="display" style="width:100%">
+    <thead>
+        <tr>
+            <th>ProductId</th>
+            <th>ProductName</th>
+            <th>UnitPrice</th>
+            <th>UnitsInStock.</th>
+
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>ProductId</th>
+            <th>ProductName</th>
+            <th>UnitPrice</th>
+            <th>UnitsInStock.</th>
+
+        </tr>
+    </tfoot>
+</table>
+
+@section Styles{
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+}
+@section Scripts{
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script>
+        new DataTable('#example', {
+            ajax: 'https://localhost:7247/api/Products/dataTables',
+            columns: [
+                { data: 'productId' },
+                { data: 'productName' },
+                { data: 'unitPrice' },
+                { data: 'unitsInStock' }
+            ]
+        });
+    </script>
+}
